@@ -1,0 +1,49 @@
+package KieRule;
+import com.card.model.card;
+
+rule "rule for prepaid card"
+
+when
+cardObject : card(cardType=="prepaid");
+then
+cardObject.setTopUpLimit(2_500_000);
+cardObject.setWeeklyLimit(2_500);
+cardObject.setMonthlyLimit(10_000);
+cardObject.setYearlyLimit(100_000);
+cardObject.setFees(4);
+end;
+
+rule "rule 1 for credit card"
+
+when
+cardObject : card(cardType=="credit");
+then
+cardObject.setTopUpLimit(100_000);
+cardObject.setWeeklyLimit(5_000);
+cardObject.setMonthlyLimit(15_000);
+cardObject.setYearlyLimit(45_000);
+cardObject.setFees(cardObject.getUsageAmount()*3/100);
+end;
+
+rule "rule 2 for credit card"
+
+when
+cardObject : card(cardType=="credit" && usageAmount>100);
+then
+cardObject.setTopUpLimit(100_000);
+cardObject.setWeeklyLimit(5_000);
+cardObject.setMonthlyLimit(15_000);
+cardObject.setYearlyLimit(45_000);
+cardObject.setFees(cardObject.getUsageAmount()*2.5/100);
+end;
+
+rule "rule 3 for credit card"
+when
+cardObject : card(cardType=="credit" && usageAmount>1000 );
+then
+cardObject.setTopUpLimit(100_000);
+cardObject.setWeeklyLimit(5_000);
+cardObject.setMonthlyLimit(15_000);
+cardObject.setYearlyLimit(45_000);
+cardObject.setFees(cardObject.getUsageAmount()*1.5/100);
+end;
